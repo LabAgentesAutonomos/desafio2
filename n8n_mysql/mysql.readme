@@ -1,0 +1,38 @@
+durante a instalação do MySQL criei o usuário agent/agent 
+comandos do MySQL>
+create database db_n8n;
+use db_8n8;
+CREATE TABLE notas_fiscais (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    chave_acesso TEXT,
+    modelo TEXT,
+    serie TEXT,
+    numero TEXT,
+    natureza_operacao TEXT,
+    data_emissao DATE,
+    cpf_cnpj_emitente TEXT,
+    razao_social_emitente TEXT,
+    inscricao_estadual_emitente TEXT,
+    uf_emitente TEXT,
+    municipio_emitente TEXT,
+    cnpj_destinatario TEXT,
+    nome_destinatario TEXT,
+    uf_destinatario TEXT,
+    indicador_ie_destinatario TEXT,
+    destino_operacao TEXT,
+    consumidor_final TEXT,
+    presenca_comprador TEXT,
+    numero_produto TEXT,
+    descricao_produto_servico TEXT,
+    codigo_ncm TEXT,
+    tipo_produto TEXT,
+    cfop TEXT,
+    quantidade DECIMAL(10,2),
+    unidade TEXT,
+    valor_unitario DECIMAL(10,2),
+    valor_total DECIMAL(10,2),
+    evento_mais_recente TEXT,
+    data_evento_mais_recente DATETIME,
+    valor_nota_fiscal DECIMAL(10,2)
+);
+ GRANT DROP ON db_n8n.* TO 'agent'@'localhost';

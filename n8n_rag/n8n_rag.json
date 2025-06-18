@@ -1,0 +1,418 @@
+{
+  "name": "Ask questions about a PDF using AI copy copy",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "c30fe4a6-2dda-4d8e-9725-7b0543419513",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "position": [
+        2180,
+        -40
+      ],
+      "webhookId": "1dda4384-8fe4-49c3-9738-aed88e382c1c",
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2380,
+        260
+      ],
+      "id": "ceef2cb0-d115-4f4b-9e40-c11a1ffbdbcb",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "cSvYIbJujFNMSjSc",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemPromptTemplate": "You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question.\nIf you don't know the answer, just say that you don't know, don't try to make up an answer.\n----------------\nContext: {context}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainRetrievalQa",
+      "typeVersion": 1.6,
+      "position": [
+        2400,
+        -40
+      ],
+      "id": "f2ba2031-d5fc-43da-82bd-7bfe69b6aa8c",
+      "name": "Question and Answer Chain"
+    },
+    {
+      "parameters": {
+        "topK": 200
+      },
+      "type": "@n8n/n8n-nodes-langchain.retrieverVectorStore",
+      "typeVersion": 1,
+      "position": [
+        2540,
+        120
+      ],
+      "id": "049d3cde-e1ed-4c51-8c1b-c7d0f28f03ad",
+      "name": "Vector Store Retriever"
+    },
+    {
+      "parameters": {
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "enchanted-maple",
+          "mode": "list",
+          "cachedResultName": "enchanted-maple"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.2,
+      "position": [
+        2540,
+        280
+      ],
+      "id": "380c5666-cf06-4eaa-89aa-a785b2537ce4",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "BPwwA8P1Q2ONV32J",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "mxbai-embed-large:latest"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "typeVersion": 1,
+      "position": [
+        2620,
+        480
+      ],
+      "id": "4a2a22e9-9ff2-4c49-877a-489949249e1c",
+      "name": "Embeddings Ollama1",
+      "credentials": {
+        "ollamaApi": {
+          "id": "KFQs9B3T56SUBNZj",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Try me out\n1. In Pinecone, create an index with 1024 dimensions and select it in *both* Pinecone nodes\n2. Click 'test workflow' at the bottom of the canvas to load data into the vector store\n3. Click 'chat' at the bottom of the canvas to ask questions about the data",
+        "height": 264.61498034081166
+      },
+      "id": "ae8dc5f2-8718-4491-a4f6-067d392b0e8e",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1180,
+        560
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "8536f08f-b70f-4364-a157-05d8a3463496",
+      "name": "When clicking 'Test Workflow' button",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        1200,
+        300
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "id": "6c05f63f-31c5-432c-943f-ca9ca943b918",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "position": [
+        1760,
+        640
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "deca1a1c-90a5-4b4d-9d84-e79aa5389a36",
+      "name": "Recursive Character Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "position": [
+        1840,
+        780
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "https://drive.usercontent.google.com/u/0/uc?id=1jaNl2kL-a32HO_jXH3g3J1mGHzHWm9YD&export=download",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1420,
+        300
+      ],
+      "id": "826708b9-4d89-464a-9107-858a7dfefd87",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.compression",
+      "typeVersion": 1.1,
+      "position": [
+        1640,
+        300
+      ],
+      "id": "36b07673-8d43-4248-888f-8553c80a870b",
+      "name": "Compression"
+    },
+    {
+      "parameters": {
+        "binaryPropertyName": "file_0",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1860,
+        300
+      ],
+      "id": "6649ef18-3aae-43dc-8e30-9e4edd59a26e",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        2080,
+        300
+      ],
+      "id": "ea880bab-d846-4fee-9848-d7ccf700d5ba",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "model": "mxbai-embed-large:latest"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "typeVersion": 1,
+      "position": [
+        1600,
+        700
+      ],
+      "id": "163b63a1-7c14-46f1-baeb-4edae6f6c2b1",
+      "name": "Embeddings Ollama",
+      "credentials": {
+        "ollamaApi": {
+          "id": "KFQs9B3T56SUBNZj",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "enchanted-maple",
+          "mode": "list",
+          "cachedResultName": "enchanted-maple"
+        },
+        "options": {
+          "clearNamespace": true
+        }
+      },
+      "id": "ae3b671e-c30c-4fe0-9135-d6f18f639446",
+      "name": "Pinecone Vector Store1",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "position": [
+        1720,
+        480
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "pineconeApi": {
+          "id": "BPwwA8P1Q2ONV32J",
+          "name": "PineconeApi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Question and Answer Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Question and Answer Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vector Store Retriever": {
+      "ai_retriever": [
+        [
+          {
+            "node": "Question and Answer Chain",
+            "type": "ai_retriever",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Vector Store Retriever",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Ollama1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking 'Test Workflow' button": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Pinecone Vector Store1",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Compression",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compression": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vector Store1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Ollama": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "8278d6ae-913d-4bb7-95db-0d18f27d02eb",
+  "meta": {
+    "templateId": "1960",
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6ad24b096b931044598f9efea4d2dc07353deb2dda0478fcbe5568e70d9f3211"
+  },
+  "id": "SyJaUjsOtV3JX1Yx",
+  "tags": []
+}
